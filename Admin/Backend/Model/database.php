@@ -22,7 +22,6 @@ class Database
             $stmt = $this->executeStatement( $query , $params );
             $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);               
             $stmt->close();
- 
             return $result;
         } catch(Exception $e) {
             throw New Exception( $e->getMessage() );
@@ -33,12 +32,27 @@ class Database
     {
         try {
             $stmt = $this->executeStatement( $query );
+            $stmt->close();
+        } catch(Exception $e) {
+            throw New Exception( $e->getMessage() );
+        }
+        return false;
+    }
+    public function delete($query = "" )
+    {
+        try {
+            $stmt = $this->executeStatement( $query );
+            $stmt->close();
+        } catch(Exception $e) {
+            throw New Exception( $e->getMessage() );
+        }
+        return false;
+    }
 
-            var_dump($stmt);
-            // $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);               
-            // $stmt->close();
- 
-            // return $result;
+    public function update($query = "" )
+    {
+        try {
+            $stmt = $this->executeStatement( $query );
         } catch(Exception $e) {
             throw New Exception( $e->getMessage() );
         }

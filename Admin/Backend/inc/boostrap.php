@@ -9,4 +9,5 @@ require_once PROJECT_ROOT_PATH . "/Controller/API/BaseController.php";
  
 // include the use model file
 require_once PROJECT_ROOT_PATH . "/Model/doctorModel.php";
+require_once PROJECT_ROOT_PATH . "/Model/appointmentModel.php";
 ?>

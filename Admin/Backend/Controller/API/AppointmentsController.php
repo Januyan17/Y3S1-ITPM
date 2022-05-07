@@ -1,5 +1,5 @@
 <?php
-class UserController extends BaseController
+class AppointmentController extends BaseController
 {
     /**
      * "/user/list" Endpoint - Get list of users
@@ -12,14 +12,14 @@ class UserController extends BaseController
  
         if (strtoupper($requestMethod) == 'GET') {
             try {
-                $userModel = new UserModel();
+                $userModel = new AppointmentModel();
  
                 $intLimit = 10;
                 if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
                     $intLimit = $arrQueryStringParams['limit'];
                 }
  
-                $arrUsers = $userModel->getDoctors($intLimit);
+                $arrUsers = $userModel->getAppointments($intLimit);
                 $responseData = json_encode($arrUsers);
             } catch (Error $e) {
                 $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
@@ -50,7 +50,7 @@ class UserController extends BaseController
 
         if($requestMethod == 'POST'){
 
-        $userModel = new UserModel();
+        $userModel = new AppointmentModel();
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
 
@@ -58,11 +58,10 @@ class UserController extends BaseController
         $reqjson = file_get_contents($jsonReqUrl);
         $reqjsonDecode = json_decode($reqjson, true);
 
-        $arrUsers= $userModel->createDocotors($reqjsonDecode["name"],$reqjsonDecode["image"],$reqjsonDecode["Type"]);
+        $arrUsers= $userModel->createAppointment($reqjsonDecode["name"],$reqjsonDecode["time"],$reqjsonDecode["mobile"],$reqjsonDecode["problem"],$reqjsonDecode["address"],$reqjsonDecode["date"],$reqjsonDecode["doctorId"]);
 
         $this->sendOutput($arrUsers);
 
-        // $responseData = json_encode($arrUsers);
  
     
     }
@@ -76,8 +75,8 @@ class UserController extends BaseController
         if($requestMethod == 'DELETE') {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $uri = explode( '/', $uri );
-        $userModel = new UserModel();
-        $userModel->deleteDoctor((int)$uri[5]);
+        $userModel = new AppointmentModel();
+        $userModel->deleteAppointment((int)$uri[5]);
 
         }
     
@@ -90,11 +89,12 @@ class UserController extends BaseController
         if($requestMethod == 'PUT') {
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
         $uri = explode( '/', $uri );
-        $userModel = new UserModel();
+        $userModel = new AppointmentModel();
         $jsonReqUrl  = "php://input";
         $reqjson = file_get_contents($jsonReqUrl);
         $reqjsonDecode = json_decode($reqjson, true);
-        $userModel->updateDoctor((int)$uri[5],$reqjsonDecode["name"],$reqjsonDecode["image"],$reqjsonDecode["Type"]);
+       $userModel->updateAppointment($reqjsonDecode["name"],$reqjsonDecode["time"],$reqjsonDecode["mobile"],$reqjsonDecode["problem"],$reqjsonDecode["address"],$reqjsonDecode["date"],(int)$uri[5]);
+
 
         }
     
